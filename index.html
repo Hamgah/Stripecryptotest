@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Payment UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f7f9fc;
+    }
+    h2 {
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    select, input {
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .crypto-options {
+      display: none;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Test Transaction Payment UI</h2>
+
+  <div class="form-group">
+    <label for="payment-method">Select Payment Method:</label>
+    <select id="payment-method">
+      <option value="">-- Select --</option>
+      <option value="visa">Visa</option>
+      <option value="paypal">PayPal</option>
+      <option value="stripe">Stripe</option>
+    </select>
+  </div>
+
+  <div id="stripe-options" style="display: none;">
+    <div class="form-group">
+      <label for="crypto-enabled">Use Crypto via Stripe?</label>
+      <select id="crypto-enabled">
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+      </select>
+    </div>
+
+    <div id="crypto-section" class="crypto-options">
+      <div class="form-group">
+        <label for="crypto-type">Select Cryptocurrency:</label>
+        <select id="crypto-type">
+          <option value="">-- Select --</option>
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="USDC">USD Coin (USDC)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="crypto-amount">Amount:</label>
+        <input type="number" id="crypto-amount" placeholder="Enter amount">
+      </div>
+    </div>
+  </div>
+
+  <button onclick="submitPayment()">Submit Payment</button>
+
+  <script>
+    const paymentMethod = document.getElementById("payment-method");
+    const stripeOptions = document.getElementById("stripe-options");
+    const cryptoEnabled = document.getElementById("crypto-enabled");
+    const cryptoSection = document.getElementById("crypto-section");
+
+    paymentMethod.addEventListener("change", function () {
+      if (paymentMethod.value === "stripe") {
+        stripeOptions.style.display = "block";
+      } else {
+        stripeOptions.style.display = "none";
+        cryptoSection.style.display = "none";
+      }
+    });
+
+    cryptoEnabled.addEventListener("change", function () {
+      if (cryptoEnabled.value === "yes") {
+        cryptoSection.style.display = "block";
+      } else {
+        cryptoSection.style.display = "none";
+      }
+    });
+
+    function submitPayment() {
+      const method = paymentMethod.value;
+      if (!method) {
+        alert("Please select a payment method.");
+        return;
+      }
+
+      if (method === "stripe" && cryptoEnabled.value === "yes") {
+        const cryptoType = document.getElementById("crypto-type").value;
+        const cryptoAmount = document.getElementById("crypto-amount").value;
+
+        if (!cryptoType || !cryptoAmount) {
+          alert("Please fill out crypto details.");
+          return;
+        }
+
+        alert(`Submitting payment via Stripe using ${cryptoAmount} ${cryptoType}`);
+      } else {
+        alert(`Submitting payment using ${method.toUpperCase()}`);
+      }
+    }
+  </script>
+
+</body>
+</html>
